@@ -19,9 +19,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -61,7 +63,7 @@ fun AddEditNoteScreen(
         )
     }
     val scope = rememberCoroutineScope()
-    
+
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
@@ -70,6 +72,7 @@ fun AddEditNoteScreen(
                         message = event.message
                     )
                 }
+
                 is AddEditNoteViewModel.UiEvent.SaveNote -> {
                     navController.navigateUp()
                 }
@@ -94,8 +97,15 @@ fun AddEditNoteScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(noteBackgroundAmitable.value)
-                .padding(16.dp)
+                .padding(
+                    16.dp,
+                    top = 30.dp
+                )
         ) {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+            }
+            Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
